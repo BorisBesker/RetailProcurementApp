@@ -1,7 +1,8 @@
-using Infrastructure.Repository;
+using AutoMapper;
+using Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage;
 using RetailProcurementApp.Dto;
+using ServiceLayer.Services;
 
 namespace RetailProcurementApp.Controllers
 {
@@ -9,62 +10,112 @@ namespace RetailProcurementApp.Controllers
     [Route("/api/store-items")]
     public class StoreItemsController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<StoreItemsController> _logger;
-        private readonly IUnitOfWork _database;
+        private readonly IStoreItemService _storeItemService;
+        private readonly IMapper _mapper;
 
-
-        public StoreItemsController(ILogger<StoreItemsController> logger)
+        public StoreItemsController(ILogger<StoreItemsController> logger, IStoreItemService storeItemService, IMapper mapper)
         {
             _logger = logger;
-            _database = new UnitOfwork();
+            _storeItemService = storeItemService;
+            _mapper = mapper;
         }
 
         [HttpGet()]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<StoreItem>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<StoreItemDto>))]
         [ProducesResponseType(400)]
-        public IEnumerable<StoreItem> Get()
+        public IActionResult Get()
         {
-            return new List<StoreItem> { new StoreItem { ItemName = "boris" } };
+            try
+            {
+                var storeItesms = _mapper.Map<List<StoreItemDto>>(_storeItemService.GetStores());
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Not a valid model");
+                }
+
+                return Ok(storeItesms);
+            }
+            catch (Exception)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(StoreItem))]
+        [ProducesResponseType(200, Type = typeof(StoreItemIdDto))]
         [ProducesResponseType(400)]
         public IActionResult GetStoreItem(int id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest("Not a valid model");
-            }
+                var storeItemModel = _storeItemService.GetSpecificStore(id);
 
-            return Ok(new StoreItem { ItemName = "boris"});
+                if(storeItemModel == null)
+                {
+                    return NotFound();
+                }
+
+                var storeItem = _mapper.Map<StoreItemIdDto>(storeItemModel);
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Not a valid model");
+                }
+
+                return Ok(storeItem);
+            }
+            catch (Exception)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost()]
-        [ProducesResponseType(200, Type = typeof(StoreItem))]
+        [ProducesResponseType(200, Type = typeof(StoreItemDto))]
         [ProducesResponseType(400)]
-        public IActionResult CreateStoreItem(StoreItem storeItem)
+        public IActionResult CreateStoreItem([FromBody] StoreItemDto storeItem)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest("Not a valid model");
+                if (storeItem == null)
+                {
+                    return BadRequest();
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Not a valid model");
+                }
+
+                var storeItemDbModel = _mapper.Map<StoreItem>(storeItem);
+
+                var response = _storeItemService.CreateItem(storeItemDbModel);
+
+                if (response.ExistSameName)
+                {
+                    ModelState.AddModelError("", "Name already exists");
+                    return StatusCode(422, ModelState);
+                }
+
+                var responseModel = _mapper.Map<StoreItemIdDto>(response.StoreItem);
+
+                return Ok(responseModel);
             }
-
-            _database.StoreItems.Add(new Infrastructure.Models.StoreItem { ItemName = "dd", Price = 32, ItemDescription = "desc" });
-            _database.Save();
-
-            return Ok(storeItem);
+            catch (Exception)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(200, Type = typeof(StoreItem))]
+        [ProducesResponseType(200, Type = typeof(StoreItemDto))]
         [ProducesResponseType(400)]
-        public IActionResult UpdateStoreItem([FromRoute] int id, [FromBody] StoreItem storeItem)
+        public IActionResult UpdateStoreItem([FromRoute] int id, [FromBody] StoreItemDto storeItem)
         {
             //if(storeItem == null)
             //{

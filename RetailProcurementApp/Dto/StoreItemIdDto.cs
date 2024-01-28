@@ -1,6 +1,6 @@
 ﻿namespace RetailProcurementApp.Dto
 {
-    public class StoreItem
+    public class StoreItemIdDto
     {
         public int Id { get; set; }
 

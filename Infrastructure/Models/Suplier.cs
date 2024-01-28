@@ -1,4 +1,5 @@
 ﻿using Azure;
+using System.Collections.ObjectModel;
 
 namespace Infrastructure.Models
 {
@@ -6,11 +7,15 @@ namespace Infrastructure.Models
     {
         public int Id { get; set; }
 
-        public required string Name { get; set; }
+        public string Name { get; set; }
 
-        public required string Address { get; set; }
+        public string Address { get; set; }
 
-        public required string Country { get; set; }
+        public  string Country { get; set; }
+
+        //private List<StoreItem> _storeItems;
+
+        //public ReadOnlyCollection<StoreItem> StoreItems => _storeItems.AsReadOnly();
 
         public List<StoreItem> StoreItems { get; } = [];
     }

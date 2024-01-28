@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailProcurementApp", "RetailProcurementApp.csproj", "{0D049E98-7B18-45CE-8235-038C4849E3A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetailProcurementApp", "RetailProcurementApp.csproj", "{0D049E98-7B18-45CE-8235-038C4849E3A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "..\Infrastructure\Infrastructure.csproj", "{197B2B07-8689-47FB-9583-2CA7460300ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "..\Infrastructure\Infrastructure.csproj", "{197B2B07-8689-47FB-9583-2CA7460300ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayer", "..\ServiceLayer\ServiceLayer.csproj", "{86A75329-7AAD-476D-BD59-2D68AD042EB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{197B2B07-8689-47FB-9583-2CA7460300ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{197B2B07-8689-47FB-9583-2CA7460300ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{197B2B07-8689-47FB-9583-2CA7460300ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86A75329-7AAD-476D-BD59-2D68AD042EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86A75329-7AAD-476D-BD59-2D68AD042EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86A75329-7AAD-476D-BD59-2D68AD042EB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86A75329-7AAD-476D-BD59-2D68AD042EB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
