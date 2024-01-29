@@ -1,5 +1,6 @@
 using AutoMapper;
 using Infrastructure.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailProcurementApp.Dto;
 using ServiceLayer.Services;
@@ -8,6 +9,7 @@ namespace RetailProcurementApp.Controllers
 {
     [ApiController]
     [Route("/api/store-items")]
+    [Authorize]
     public class StoreItemsController : ControllerBase
     {
         private readonly ILogger<StoreItemsController> _logger;
