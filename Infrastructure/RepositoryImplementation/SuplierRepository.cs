@@ -1,10 +1,5 @@
 ﻿using Infrastructure.Data;
 using Infrastructure.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
 {
@@ -12,5 +7,15 @@ namespace Infrastructure.Repository
     {
         public SuplierRepository(RetailProcurementContext context)
             : base(context) { }
+
+        public bool Exists(int id)
+        {
+            return Context.Set<Suplier>().Any(x => x.Id == id);
+        }
+
+        public bool ExistsWithSameName(string name)
+        {
+            return Context.Set<Suplier>().Any(x => x.Name.Trim().ToUpper() == name.Trim().Trim());
+        }
     }
 }

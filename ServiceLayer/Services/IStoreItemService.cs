@@ -5,8 +5,10 @@ namespace ServiceLayer.Services
 {
     public interface IStoreItemService
     {
-        StoreItem? GetSpecificStore(int id);
+        StoreItem? GetSpecificItem(int id);
         IEnumerable<StoreItem> GetStores();
-        StoreItemCreateResponse CreateItem(StoreItem item);
+        ServiceResponse<StoreItem> CreateItem(StoreItem item);
+        ServiceResponse<StoreItem> UpdateItem(int id, StoreItem item);
+        ServiceResponse<StoreItem> DeleteItem(int id);
     }
 }

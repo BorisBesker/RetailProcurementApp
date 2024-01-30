@@ -10,7 +10,6 @@ namespace RetailProcurementApp.Dto
         [Required]
         public string ItemDescription { get; set; }
 
-        [Required]
         public decimal Price { get; set; }
     }
 }

@@ -70,7 +70,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Supliers");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.SuplierItem", b =>
+            modelBuilder.Entity("Infrastructure.Models.SuplierStoreItem", b =>
                 {
                     b.Property<int>("StoreItemId")
                         .HasColumnType("int");
@@ -78,29 +78,72 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SuplierId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("SuplierPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("StoreItemId", "SuplierId");
 
                     b.HasIndex("SuplierId");
 
-                    b.ToTable("SuplierItem");
+                    b.ToTable("SuplierStoreItem");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.SuplierItem", b =>
+            modelBuilder.Entity("Infrastructure.Models.User", b =>
                 {
-                    b.HasOne("Infrastructure.Models.StoreItem", null)
-                        .WithMany()
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Infrastructure.Models.SuplierStoreItem", b =>
+                {
+                    b.HasOne("Infrastructure.Models.StoreItem", "StoreItem")
+                        .WithMany("SuplierStoreItems")
                         .HasForeignKey("StoreItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Suplier", null)
-                        .WithMany()
+                    b.HasOne("Infrastructure.Models.Suplier", "Suplier")
+                        .WithMany("SuplierStoreItems")
                         .HasForeignKey("SuplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("StoreItem");
+
+                    b.Navigation("Suplier");
+                });
+
+            modelBuilder.Entity("Infrastructure.Models.StoreItem", b =>
+                {
+                    b.Navigation("SuplierStoreItems");
+                });
+
+            modelBuilder.Entity("Infrastructure.Models.Suplier", b =>
+                {
+                    b.Navigation("SuplierStoreItems");
                 });
 #pragma warning restore 612, 618
         }

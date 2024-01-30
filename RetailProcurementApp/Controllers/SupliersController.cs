@@ -8,37 +8,36 @@ using ServiceLayer.Services;
 namespace RetailProcurementApp.Controllers
 {
     [ApiController]
-    [Route("/api/store-items")]
+    [Route("/api/supliers")]
     //[Authorize]
-    public class StoreItemsController : ControllerBase
+    public class SupliersController : ControllerBase
     {
-        private readonly ILogger<StoreItemsController> _logger;
-        private readonly IStoreItemService _storeItemService;
+        private readonly ILogger<SupliersController> _logger;
+        private readonly ISuplierService _suplierService;
         private readonly IMapper _mapper;
 
-        public StoreItemsController(ILogger<StoreItemsController> logger, IStoreItemService storeItemService, IMapper mapper)
+        public SupliersController(ILogger<SupliersController> logger, ISuplierService storeItemService, IMapper mapper)
         {
             _logger = logger;
-            _storeItemService = storeItemService;
+            _suplierService = storeItemService;
             _mapper = mapper;
         }
 
         [HttpGet()]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<StoreItemIdDto>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<SuplierIdDto>))]
         [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public IActionResult GetStoreItems()
+        public IActionResult GetSupliers()
         {
             try
             {
-                var storeItems = _mapper.Map<List<StoreItemIdDto>>(_storeItemService.GetStores());
+                var suplierItesms = _mapper.Map<List<SuplierIdDto>>(_suplierService.GetSupliers());
 
                 if (!ModelState.IsValid)
                 {
                     return BadRequest("Not a valid model");
                 }
 
-                return Ok(storeItems);
+                return Ok(suplierItesms);
             }
             catch (Exception)
             {
@@ -48,28 +47,27 @@ namespace RetailProcurementApp.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(StoreItemIdDto))]
+        [ProducesResponseType(200, Type = typeof(SuplierIdDto))]
         [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public IActionResult GetStoreItem(int id)
+        public IActionResult GetSuplier(int id)
         {
             try
             {
-                var storeItemModel = _storeItemService.GetSpecificItem(id);
+                var suplierModel = _suplierService.GetSpecificSuplier(id);
 
-                if(storeItemModel == null)
+                if (suplierModel == null)
                 {
                     return NotFound();
                 }
 
-                var storeItem = _mapper.Map<StoreItemIdDto>(storeItemModel);
+                var suplier = _mapper.Map<SuplierIdDto>(suplierModel);
 
                 if (!ModelState.IsValid)
                 {
                     return BadRequest("Not a valid model");
                 }
 
-                return Ok(storeItem);
+                return Ok(suplier);
             }
             catch (Exception)
             {
@@ -79,15 +77,14 @@ namespace RetailProcurementApp.Controllers
         }
 
         [HttpPost()]
-        [ProducesResponseType(200, Type = typeof(StoreItemIdDto))]
+        [ProducesResponseType(200, Type = typeof(SuplierIdDto))]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
-        [ProducesResponseType(500)]
-        public IActionResult CreateStoreItem([FromBody] StoreItemDto storeItem)
+        public IActionResult CreateSuplier([FromBody] SuplierDto suplier)
         {
             try
             {
-                if (storeItem == null)
+                if (suplier == null)
                 {
                     return BadRequest();
                 }
@@ -97,17 +94,17 @@ namespace RetailProcurementApp.Controllers
                     return BadRequest("Not a valid model");
                 }
 
-                var storeItemDbModel = _mapper.Map<StoreItem>(storeItem);
+                var suplierModel = _mapper.Map<Suplier>(suplier);
 
-                var response = _storeItemService.CreateItem(storeItemDbModel);
+                var response = _suplierService.CreateSuplier(suplierModel);
 
                 if (response.ExistSameName)
                 {
-                    ModelState.AddModelError("", "Itesm with same Name already exists");
+                    ModelState.AddModelError("", "Name already exists");
                     return StatusCode(422, ModelState);
                 }
 
-                var responseModel = _mapper.Map<StoreItemIdDto>(response.Entity);
+                var responseModel = _mapper.Map<SuplierIdDto>(response.Entity);
 
                 return Ok(responseModel);
             }
@@ -119,11 +116,10 @@ namespace RetailProcurementApp.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public IActionResult UpdateStoreItem([FromRoute] int id, [FromBody] StoreItemDto storeItem)
+        public IActionResult UpdateStoreItem([FromRoute] int id, [FromBody] SuplierDto storeItem)
         {
             try
             {
@@ -137,9 +133,9 @@ namespace RetailProcurementApp.Controllers
                     return BadRequest("Not a valid model");
                 }
 
-                var storeItemDbModel = _mapper.Map<StoreItem>(storeItem);
+                var storeItemDbModel = _mapper.Map<Suplier>(storeItem);
 
-                var response = _storeItemService.UpdateItem(id, storeItemDbModel);
+                var response = _suplierService.UpdateSuplier(id, storeItemDbModel);
 
                 if (!response.RecordExists)
                 {
@@ -156,15 +152,14 @@ namespace RetailProcurementApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
         public IActionResult DeleteStoreItem([FromRoute] int id)
         {
             try
             {
-                var response = _storeItemService.DeleteItem(id);
+                var response = _suplierService.DeleteSuplier(id);
 
                 if (!response.RecordExists)
                 {
