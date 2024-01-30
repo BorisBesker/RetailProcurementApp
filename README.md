@@ -1,1 +1,4 @@
 # RetailProcurementApp
+
+
+Api Enpoints:
