@@ -1,32 +1,29 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Infrastructure.Models;
+using Infrastructure.Repository;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
+using ServiceLayer.Models;
+using ServiceLayer.Services;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceLayer.Services
+namespace ServiceLayer.ServicesImplementation
 {
     public class UserService : IUserService
     {
-        private List<User> _users = new List<User>
-        {
-            new User{ UserName = "Admin", Password = "Password"}
-        };
-
         private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _database;
 
-        public UserService(IConfiguration configuration)
+        public UserService(IConfiguration configuration, IUnitOfWork database) 
         {
             _configuration = configuration;
+            _database = database;
         }
 
         public string Login(User user)
         {
-            var LoginUser = _users.SingleOrDefault(x => x.UserName == user.UserName && x.Password == user.Password);
+            var LoginUser = _database.Users.GetUserByUsernameAndPassword(user.UserName, user.Password);
 
             if (LoginUser == null)
             {
@@ -35,8 +32,6 @@ namespace ServiceLayer.Services
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
-
-            //var key = Encoding.ASCII.GetBytes("3713ab7f791c1991d3a210c5fa68c3aa");
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -47,15 +42,26 @@ namespace ServiceLayer.Services
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
             string userToken = tokenHandler.WriteToken(token);
+
             return userToken;
         }
-    }
 
-    public class User
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
+
+        public ServiceResponse<User> Reigster(User user)
+        {
+            if(_database.Users.ExistsWithSameUserName(user.UserName))
+            {
+                return new ServiceResponse<User> { Success = false, UserNameExists = true };
+            }
+
+            _database.Users.Add(user);
+
+            _database.Save();
+
+            return new ServiceResponse<User> { Success = true, UserNameExists = false };
+        }
     }
 }

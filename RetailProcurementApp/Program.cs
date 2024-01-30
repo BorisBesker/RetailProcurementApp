@@ -3,6 +3,7 @@ using ServiceLayer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ServiceLayer.ServicesImplementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,8 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUnitOfWork, UnitOfwork>();
 builder.Services.AddScoped<IStoreItemService, StoreItemService>();
+builder.Services.AddScoped<ISuplierService, Suplierservice>();
+builder.Services.AddScoped<ISuplerItemsService, SuplerItemsService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddEndpointsApiExplorer();

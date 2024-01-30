@@ -10,7 +10,7 @@ namespace Infrastructure.Repository
         {
             Context = context;
         }
-        public TEntity Get(object id)
+        public TEntity Get(params object?[] id)
         {
             return Context.Set<TEntity>().Find(id);
         }

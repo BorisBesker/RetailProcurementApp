@@ -6,6 +6,10 @@
 
         IStoreItemRepository StoreItems { get; }
 
+        ISuplierItemRepository SuplierItems { get; }
+
+        IUserRepository Users { get; }
+
         int Save();
     }
 }

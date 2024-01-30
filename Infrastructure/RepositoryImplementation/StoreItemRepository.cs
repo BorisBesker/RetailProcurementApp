@@ -1,6 +1,5 @@
 ﻿using Infrastructure.Data;
 using Infrastructure.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Infrastructure.Repository
 {
@@ -18,6 +17,5 @@ namespace Infrastructure.Repository
         {
             return Context.Set<StoreItem>().Any(x => x.ItemName.Trim().ToUpper() == name.Trim().Trim());
         }
-
     }
 }

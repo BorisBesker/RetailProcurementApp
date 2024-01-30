@@ -41,24 +41,40 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SuplierItem",
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SuplierStoreItem",
                 columns: table => new
                 {
                     StoreItemId = table.Column<int>(type: "int", nullable: false),
                     SuplierId = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    SuplierPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SuplierItem", x => new { x.StoreItemId, x.SuplierId });
+                    table.PrimaryKey("PK_SuplierStoreItem", x => new { x.StoreItemId, x.SuplierId });
                     table.ForeignKey(
-                        name: "FK_SuplierItem_StoreItems_StoreItemId",
+                        name: "FK_SuplierStoreItem_StoreItems_StoreItemId",
                         column: x => x.StoreItemId,
                         principalTable: "StoreItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SuplierItem_Supliers_SuplierId",
+                        name: "FK_SuplierStoreItem_Supliers_SuplierId",
                         column: x => x.SuplierId,
                         principalTable: "Supliers",
                         principalColumn: "Id",
@@ -66,8 +82,8 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SuplierItem_SuplierId",
-                table: "SuplierItem",
+                name: "IX_SuplierStoreItem_SuplierId",
+                table: "SuplierStoreItem",
                 column: "SuplierId");
         }
 
@@ -75,7 +91,10 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "SuplierItem");
+                name: "SuplierStoreItem");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "StoreItems");

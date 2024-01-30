@@ -1,7 +1,4 @@
-﻿using Azure;
-using System.Collections.ObjectModel;
-
-namespace Infrastructure.Models
+﻿namespace Infrastructure.Models
 {
     public class Suplier
     {
@@ -13,10 +10,8 @@ namespace Infrastructure.Models
 
         public  string Country { get; set; }
 
-        //private List<StoreItem> _storeItems;
-
-        //public ReadOnlyCollection<StoreItem> StoreItems => _storeItems.AsReadOnly();
-
         public List<StoreItem> StoreItems { get; } = [];
+
+        public List<SuplierStoreItem> SuplierStoreItems { get; } = [];
     }
 }

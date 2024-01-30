@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Infrastructure.Repository
+﻿namespace Infrastructure.Repository
 {
     public interface IRepository<TEntitiy> where TEntitiy : class
     {
-        TEntitiy Get(object id);
+        TEntitiy Get(params object?[] id);
         IEnumerable<TEntitiy> GetAll();
         void Add(TEntitiy entity);
         void Update(TEntitiy entity);
