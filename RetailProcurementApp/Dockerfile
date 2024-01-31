@@ -1,27 +1,26 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-#For more information, please see https://aka.ms/containercompat
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-nanoserver-1809 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["RetailProcurementApp.csproj", "."]
-RUN dotnet restore "./././RetailProcurementApp.csproj"
+COPY ["RetailProcurementApp/RetailProcurementApp.csproj", "RetailProcurementApp/"]
+RUN dotnet restore "RetailProcurementApp/RetailProcurementApp.csproj" -v detailed
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./RetailProcurementApp.csproj" -c %BUILD_CONFIGURATION% -o /app/build
+
+WORKDIR "/src/RetailProcurementApp"
+RUN dotnet build "RetailProcurementApp.csproj" -c Release -o /app -v detailed
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./RetailProcurementApp.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "RetailProcurementApp.csproj" -c Release -o /app -v detailed
 
 FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app .
+
+#ENV ASPNETCORE_URLS http://*:8080
+EXPOSE 8080
+EXPOSE 8081
+
 ENTRYPOINT ["dotnet", "RetailProcurementApp.dll"]

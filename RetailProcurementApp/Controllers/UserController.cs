@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailProcurementApp.Dto;
 using ServiceLayer.Services;
-using ServiceLayer.ServicesImplementation;
 
 namespace RetailProcurementApp.Controllers
 {
@@ -45,7 +44,8 @@ namespace RetailProcurementApp.Controllers
                 var token = _userService.Login(userModel);
                 if (token == null || token == string.Empty)
                 {
-                    return BadRequest(new { message = "UserName or Password is incorrect" });
+                    ModelState.AddModelError("", "UserName or Password is incorrect");
+                    return StatusCode(422, ModelState);
                 }
 
                 return Ok(token);

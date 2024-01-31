@@ -37,5 +37,23 @@ namespace ServiceLayer.ServicesImplementation
 
             return new ServiceResponse<SuplierStoreItem> { Success = true, Entity = suplierStoreItem };
         }
+
+        public ServiceResponse<SuplierStoreItem> DeleteSuplierItemRelationship(int supplierId, int storeItemId)
+        {
+            var relationShip = _database.SuplierItems.Get(storeItemId, supplierId);
+
+            if (relationShip == null)
+            {
+                return new ServiceResponse<SuplierStoreItem> { Success = false, RecordExists = false };
+            }
+
+            // DO not instanciate another instace for delete => EF find already tracks the instance 
+
+            _database.SuplierItems.Remove(relationShip);
+
+            _database.Save();
+
+            return new ServiceResponse<SuplierStoreItem> { Success = true, RecordExists = true };
+        }    
     }
 }

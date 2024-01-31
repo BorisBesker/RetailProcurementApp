@@ -65,16 +65,16 @@ namespace ServiceLayer.ServicesImplementation
                 return new ServiceResponse<Suplier> { Success = false, RecordExists = false };
             }
 
-            var storeitem = new Suplier
+            var suplier = new Suplier
             {
                 Id = id
             };
 
-            _database.Supliers.Remove(storeitem);
+            _database.Supliers.Remove(suplier);
 
             _database.Save();
 
-            return new ServiceResponse<Suplier> { Success = true, RecordExists = true, Entity = storeitem };
+            return new ServiceResponse<Suplier> { Success = true, RecordExists = true, Entity = suplier };
         }
     }
 }

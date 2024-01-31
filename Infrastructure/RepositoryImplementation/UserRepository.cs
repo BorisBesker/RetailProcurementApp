@@ -15,7 +15,7 @@ namespace Infrastructure.Repository
 
         public bool ExistsWithSameUserName(string username)
         {
-            return Context.Set<User>().Any(x => x.UserName.Trim().ToUpper() == username.Trim());
+            return Context.Set<User>().Any(x => x.UserName.Trim().ToUpper() == username.Trim().ToUpper());
         }
     }
 }

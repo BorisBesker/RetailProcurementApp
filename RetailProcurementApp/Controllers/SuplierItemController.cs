@@ -90,19 +90,18 @@ namespace RetailProcurementApp.Controllers
         }
 
         [HttpDelete("{supplierId}/{storeId}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteStoreItem([FromRoute] int id)
+        [ProducesResponseType(204)]
+        public IActionResult DeleteRelationship([FromRoute] int supplierId, int storeId)
         {
             try
             {
-                //var response = _suplierService.DeleteSuplier(id);
+                var response = _suplierItemsService.DeleteSuplierItemRelationship(supplierId, storeId);
 
-                //if (!response.RecordExists)
-                //{
-                //    return NotFound();
-                //}
+                if (!response.RecordExists)
+                {
+                    return NotFound();
+                }
 
                 return NoContent();
             }
