@@ -7,5 +7,6 @@ namespace ServiceLayer.Services
     {
         public IEnumerable<SuplierStoreItem> GetSuplierItemRelationships();
         public ServiceResponse<SuplierStoreItem> CreateSuplierItemRelationship(SuplierStoreItem suplierStoreItem);
+        ServiceResponse<SuplierStoreItem> DeleteSuplierItemRelationship(int supplierId, int storeItemId);
     }
 }

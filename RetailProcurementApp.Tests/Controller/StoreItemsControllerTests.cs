@@ -51,11 +51,11 @@ namespace RetailProcurementApp.Tests.Controller
 
             // Act
             var result = controller.GetStoreItems();
-            var x = result as ObjectResult;
+            var objectResult = result as ObjectResult;
 
             // Assert
             result.Should().NotBeNull();
-            Assert.Equal(StatusCodes.Status500InternalServerError, x?.StatusCode);
+            Assert.Equal(StatusCodes.Status500InternalServerError, objectResult?.StatusCode);
         }
     }
 }

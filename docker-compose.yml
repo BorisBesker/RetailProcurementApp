@@ -1,0 +1,14 @@
+services:
+  retailprocurementapp:
+    build:
+      context: ./ # Directory containing your Dockerfile and source code
+      dockerfile: ./RetailProcurementApp/Dockerfile # Path to your Dockerfile relative to the context
+    image: retailprocurementapp:latest # This tag will be used for the built image
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - BUILD_CONFIGURATION=Release
+    volumes:
+      - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
+      - ${HOME}/.aspnet/https:/root/.aspnet/https/

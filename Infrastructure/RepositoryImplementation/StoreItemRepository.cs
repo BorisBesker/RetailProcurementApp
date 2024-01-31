@@ -15,7 +15,7 @@ namespace Infrastructure.Repository
 
         public bool ExistsWithSameName(string name)
         {
-            return Context.Set<StoreItem>().Any(x => x.ItemName.Trim().ToUpper() == name.Trim().Trim());
+            return Context.Set<StoreItem>().Any(x => x.ItemName.Trim().ToUpper() == name.Trim().ToUpper());
         }
     }
 }

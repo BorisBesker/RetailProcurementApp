@@ -20,9 +20,9 @@ namespace Infrastructure.Repository
         public ISuplierItemRepository SuplierItems => _suplierItems ?? (_suplierItems = new SuplierItemRepository(_context));
         public IUserRepository Users => _users ?? (_users = new UserRepository(_context));
 
-        public UnitOfwork()
+        public UnitOfwork(RetailProcurementContext dataContext)
         {
-            _context = new RetailProcurementContext();
+            _context = dataContext;
         }
 
         public int Save()
