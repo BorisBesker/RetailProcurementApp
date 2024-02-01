@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Infrastructure.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetailProcurementApp.Dto;
 using ServiceLayer.Services;
 
 namespace RetailProcurementApp.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("/api/supplier-store-items")]
     public class SuplierItemController : Controller

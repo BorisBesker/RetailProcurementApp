@@ -7,6 +7,7 @@ using ServiceLayer.Services;
 
 namespace RetailProcurementApp.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("/api/supliers")]
     //[Authorize]
