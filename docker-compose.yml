@@ -1,4 +1,13 @@
 services:
+  SqlServerExpressDb:
+    container_name: SqlExpressServerContainer
+    image: mcr.microsoft.com/mssql/server:latest
+    ports:
+      - 8002:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=myStong_Password123# 
+
   retailprocurementapp:
     build:
       context: ./ # Directory containing your Dockerfile and source code
@@ -9,6 +18,9 @@ services:
       - "8081:8081"
     environment:
       - BUILD_CONFIGURATION=Release
+      - Data__DefaultConnection__ConnectionString=Server=SqlServerExpressDb;Database=DefaultConnection;User Id=sa;Password=myStong_Password123#;Trust Server Certificate=True
     volumes:
       - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
       - ${HOME}/.aspnet/https:/root/.aspnet/https/
+    depends_on:
+      - SqlServerExpressDb

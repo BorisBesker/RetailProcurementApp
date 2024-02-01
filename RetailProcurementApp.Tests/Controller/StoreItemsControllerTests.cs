@@ -26,7 +26,7 @@ namespace RetailProcurementApp.Tests.Controller
         }
 
         [Fact]
-        public void GetStoreItems_NoException_ReturnsOk() 
+        public void GetStoreItems_ValidRequest_ReturnsOk() 
         {
             // Arange 
             var storeItems = A.Fake<ICollection<StoreItemDto>>();
@@ -127,7 +127,7 @@ namespace RetailProcurementApp.Tests.Controller
         }
 
         [Fact]
-        public void CreateStoreItem_ValidModel_ReturnsOk()
+        public void CreateStoreItem_ValidRequest_ReturnsOk()
         {
             // Arange 
             var storeItemDto = A.Fake<StoreItemDto>();
