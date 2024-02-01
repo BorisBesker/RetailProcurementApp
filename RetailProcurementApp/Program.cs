@@ -6,6 +6,7 @@ using System.Text;
 using ServiceLayer.ServicesImplementation;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,4 +57,23 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+ApplyMigration();
+
 app.Run();
+
+
+void ApplyMigration()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var _Db = scope.ServiceProvider.GetRequiredService<RetailProcurementContext>();
+
+        if (_Db != null)
+        {
+            if (_Db.Database.GetPendingMigrations().Any())
+            {
+                _Db.Database.Migrate();
+            }
+        }
+    }
+}

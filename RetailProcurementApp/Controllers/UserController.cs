@@ -8,7 +8,7 @@ using ServiceLayer.Services;
 namespace RetailProcurementApp.Controllers
 {
 
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -22,7 +22,7 @@ namespace RetailProcurementApp.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        [ProducesResponseType(200, Type = typeof(StoreItemIdDto))]
+        [ProducesResponseType(200, Type = typeof(TokenDto))]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public IActionResult Login(UserLoginDto userLoginModel)
@@ -48,7 +48,7 @@ namespace RetailProcurementApp.Controllers
                     return StatusCode(422, ModelState);
                 }
 
-                return Ok(token);
+                return Ok(new TokenDto { Token = token});
             }
             catch (Exception)
             {
