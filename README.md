@@ -116,9 +116,9 @@ Open [https://localhost:8000/swagger/index.html](http://localhost:8080/swagger/i
 
 ## Assumptions, limitations, or additional considerations
 
-●  Unit and intergations test are written for StoreItemController and Service (time limit)
+●  Unit and intergations test are written for StoreItemController and Service 
 
-●  Potenntial db schema for statistics controller (time limit)
+●  Potenntial db schema for statistics controller 
 
 <img width="935" alt="Screenshot 2024-01-27 162628" src="https://github.com/BorisBesker/RetailProcurementApp/assets/26566198/f74c08e2-6182-47c1-966a-7fc5f1994d4e">
 
